@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>숫자 맞추기 게임</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #222;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h1 {
+      color: #00e6e6;
+    }
+
+    input[type="number"] {
+      padding: 10px;
+      font-size: 16px;
+      width: 150px;
+      margin-right: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #00e6e6;
+      border: none;
+      color: #000;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    #message {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+
+    #attempts {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>숫자 맞추기 게임</h1>
+  <p>1부터 100 사이의 숫자를 맞춰보세요!</p>
+  <input type="number" id="guess" placeholder="숫자 입력" min="1" max="100">
+  <button onclick="checkGuess()">확인</button>
+  <button onclick="resetGame()">다시하기</button>
+
+  <div id="message"></div>
+  <div id="attempts"></div>
+
+  <script>
+    let targetNumber = Math.floor(Math.random() * 100) + 1;
+    let attempts = 0;
+    const message = document.getElementById('message');
+    const attemptsDisplay = document.getElementById('attempts');
+
+    function checkGuess() {
+      const guessInput = document.getElementById('guess');
+      const guess = Number(guessInput.value);
+
+      if (!guess || guess < 1 || guess > 100) {
+        message.textContent = '⚠️ 1부터 100 사이의 숫자를 입력하세요!';
+        return;
+      }
+
+      attempts++;
+      if (guess === targetNumber) {
+        message.textContent = `🎉 정답입니다! ${attempts}번 만에 맞췄어요!`;
+        message.style.color = '#00ff99';
+      } else if (guess < targetNumber) {
+        message.textContent = '🔼 너무 낮아요!';
+        message.style.color = '#ffcc00';
+      } else {
+        message.textContent = '🔽 너무 높아요!';
+        message.style.color = '#ff6666';
+      }
+
+      attemptsDisplay.textContent = `시도 횟수: ${attempts}`;
+      guessInput.value = '';
+      guessInput.focus();
+    }
+
+    function resetGame() {
+      targetNumber = Math.floor(Math.random() * 100) + 1;
+      attempts = 0;
+      message.textContent = '';
+      attemptsDisplay.textContent = '';
+      document.getElementById('guess').value = '';
+    }
+  </script>
+</body>
+</html>
